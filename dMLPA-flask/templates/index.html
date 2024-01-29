@@ -24,7 +24,7 @@
 <body>
 
     <div class="container">
-        <h1>dMLPA-flask Web App</h1>
+        <h1>dMLPA Results Generator</h1>
     </div>
 
     <div class="container">
@@ -55,12 +55,21 @@
 
         {% if backend_state == "initial" %}
         <div class="alert alert-dark" role="alert">
-            <h4 class="alert-heading">Welcome to dMLPA-flask</h4>
-            <p>Please select the files for your analysis below, then click
-                the "Run dMLPA-flask" button.</p>
+            <h4 class="alert-heading">Welcome to dMLPA Results Generator</h4>
+            <p> This web-interface can be used to generate a pdf report of the results obtained from
+                dMLPA analysis. <br>
+                To do this the following 2 inputs are required:<br>
+                <ul>
+                    <li>Probe Information File (xls/xlsx)- This is an excel document containing
+                        information on the genomic location of all probes present in the digitalMLPA
+                        probemix.</li>
+                    <li>Patient Files (xls/xlsx) - These are inidividual excel files generated
+                        by the digitalMLPA filtering script</li>
+                    </ul>
+                Please select the appropriate files below and then click the "Run dMLPA-flask" button.</p>
         </div>
         <div class="container">
-            <h4>dMLPA-flask File Upload</h4>
+            <h4>File Upload</h4>
             <form action=" {{ url_for('dMLPA-flask.form') }}  " method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 <div class="row">
@@ -79,13 +88,13 @@
 
         {%elif backend_state == "started" %}
         <div class="alert alert-success" role="alert">
-            <h4 class="alert-heading">dMLPA-flask Analysis Complete</h4>
-            <p>You submitted the following single file: </p>
+            <h4 class="alert-heading">dMLPA Analysis Complete</h4>
+            <p>You submitted the following probe file: </p>
             <p style="color:blue;"> {{ single_file_name }} </p>
-            <p>You submitted the following multiple files:</p>
+            <p>You submitted the following patient files:</p>
             <p style="color:blue;"> {{ multiple_array_of_files_names }} </p>
             <hr>
-            <h4>The following output can be downloaded to your computer using the button below:</h4>
+            <h4>To download the pdf reports to your computer clink the download button below.</h4>
             <p style="color:blue;"> {{ report_name }} </p>
             <br>
             <a class="btn btn-success" href=" {{url_for('dMLPA-flask.download')}}  ">Download</a>
