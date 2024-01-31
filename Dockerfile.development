@@ -12,19 +12,25 @@ ENV FLASK_APP=/dMLPA-flask/app.py
 ENV PYTHONPATH=/dMLPA-flask/dMLPA-flask
 ENV SESSION_FILE_DIR /var/local/dMLPA-flask/flask_sessions
 ENV SCRIPT_NAME=dMLPA-flask
-ENV UPLOAD_FOLDER /var/local/dMLPA-flask/uploads
-ENV FLASK_DEBUG=1 
+ENV UPLOAD_FOLDER_1 /var/local/dMLPA-flask/probe_file
+ENV UPLOAD_FOLDER_2 /var/local/dMLPA-flask/inputs
+ENV OUTPUT_FOLDER /var/local/dMLPA-flask/outputs
+ENV FLASK_DEBUG=1
 # only for development
 
 # add and install requirements
 COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
-USER 0 
+USER 0
 RUN mkdir -p /var/local/dMLPA-flask/logs/
-RUN mkdir -p /var/local/dMLPA-flask/uploads/
+RUN mkdir -p /var/local/dMLPA-flask/probe_file
+RUN mkdir -p /var/local/dMLPA-flask/inputs
+RUN mkdir -p /var/local/dMLPA-flask/outputs
 RUN mkdir -p /var/local/dMLPA-flask/flask_sessions/
 RUN chmod 777 /var/local/dMLPA-flask/logs/
-RUN chmod 777 /var/local/dMLPA-flask/uploads/
+RUN chmod 777 /var/local/dMLPA-flask/probe_file
+RUN chmod 777 /var/local/dMLPA-flask/inputs
+RUN chmod 777 /var/local/dMLPA-flask/outputs
 RUN chmod 777 /var/local/dMLPA-flask/flask_sessions/
 
 USER $CONTAINER_USER_ID

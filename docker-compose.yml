@@ -9,7 +9,9 @@ services:
     volumes:
       - .:/dMLPA-flask/
       - /var/local/dMLPA-flask/logs/:/var/local/dMLPA-flask/logs/
-      - /var/local/dMLPA-flask/uploads/:/var/local/dMLPA-flask/uploads/
+      - /var/local/dMLPA-flask/probe_file/:/var/local/dMLPA-flask/probe_file/
+      - /var/local/dMLPA-flask/inputs/:/var/local/dMLPA-flask/inputs/
+      - /var/local/dMLPA-flask/outputs/:/var/local/dMLPA-flask/outputs/
 
     ports:
       - 5000:5000

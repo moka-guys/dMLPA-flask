@@ -39,7 +39,9 @@ logger.setLevel("DEBUG")
 
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = os.environ["UPLOAD_FOLDER"]
+app.config["UPLOAD_FOLDER_1"] = os.environ["UPLOAD_FOLDER_1"]
+app.config["UPLOAD_FOLDER_2"] = os.environ["UPLOAD_FOLDER_2"]
+app.config["OUTPUT_FOLDER"] = os.environ["OUTPUT_FOLDER"]
 app.config["SECRET_KEY"] = "catchmeifyoucan"
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_PERMANENT"] = True
@@ -141,7 +143,8 @@ def form(backend_state="initial"):
         # Use FileHandler() to log to a file
 
         session["timestr"] = datetime.now().strftime("%Y%m%d-%H%M%S")
-        os.mkdir(os.path.join(app.config["UPLOAD_FOLDER"], session["timestr"]))
+        os.mkdir(os.path.join(app.config["UPLOAD_FOLDER_1"], session["timestr"]))
+        os.mkdir(os.path.join(app.config["UPLOAD_FOLDER_2"], session["timestr"]))
         file_handler = logging.FileHandler(
             f"/var/local/dMLPA-flask/logs/dMLPA-flask_error.log"
         )
@@ -170,18 +173,18 @@ def form(backend_state="initial"):
 
         # Create the paths to the uploaded files
         input_single_file_tmp_path = os.path.join(
-            app.config["UPLOAD_FOLDER"], session["timestr"], input_single_file_basename
+            app.config["UPLOAD_FOLDER_1"], session["timestr"], input_single_file_basename
         )
 
         input_files_tmp_paths = [
-            os.path.join(app.config["UPLOAD_FOLDER"], session["timestr"], basename)
+            os.path.join(app.config["UPLOAD_FOLDER_2"], session["timestr"], basename)
             for basename in input_files_basenames
         ]
 
         zipped_output, input_errors, input_ok_flag = run_backend(
             input_single_file_tmp_path,
             input_files_tmp_paths,
-            app.config["UPLOAD_FOLDER"],
+            app.config["OUTPUT_FOLDER"],
         )
         # Save the zipped output path to the session
         session["zipped_output"] = zipped_output
@@ -225,7 +228,7 @@ class SingleFileUpload:
             secure_file_name = secure_filename(file_name)
             file.save(
                 os.path.join(
-                    app.config["UPLOAD_FOLDER"],
+                    app.config["UPLOAD_FOLDER_1"],
                     session["timestr"],
                     secure_file_name,
                 )
@@ -233,7 +236,7 @@ class SingleFileUpload:
 
             return str(
                 os.path.join(
-                    app.config["UPLOAD_FOLDER"],
+                    app.config["UPLOAD_FOLDER_1"],
                     session["timestr"],
                     secure_file_name,
                 )
@@ -257,7 +260,7 @@ class MultiFileArrayUpload:
                 secure_file_name = secure_filename(file_name)
                 file.save(
                     os.path.join(
-                        app.config["UPLOAD_FOLDER"],
+                        app.config["UPLOAD_FOLDER_2"],
                         session["timestr"],
                         secure_file_name,
                     )
@@ -265,7 +268,7 @@ class MultiFileArrayUpload:
                 file_names.append(
                     str(
                         os.path.join(
-                            app.config["UPLOAD_FOLDER"],
+                            app.config["UPLOAD_FOLDER_2"],
                             session["timestr"],
                             secure_file_name,
                         )
