@@ -145,6 +145,7 @@ def form(backend_state="initial"):
         session["timestr"] = datetime.now().strftime("%Y%m%d-%H%M%S")
         os.mkdir(os.path.join(app.config["UPLOAD_FOLDER_1"], session["timestr"]))
         os.mkdir(os.path.join(app.config["UPLOAD_FOLDER_2"], session["timestr"]))
+        os.mkdir(os.path.join(app.config["OUTPUT_FOLDER"], session["timestr"]))
         file_handler = logging.FileHandler(
             f"/var/local/dMLPA-flask/logs/dMLPA-flask_error.log"
         )
@@ -181,10 +182,13 @@ def form(backend_state="initial"):
             for basename in input_files_basenames
         ]
 
+        # Create the path to the output folder
+        output_path = os.path.join(app.config["OUTPUT_FOLDER"], session["timestr"])
+
         zipped_output, input_errors, input_ok_flag = run_backend(
             input_single_file_tmp_path,
             input_files_tmp_paths,
-            app.config["OUTPUT_FOLDER"],
+            output_path,
         )
         # Save the zipped output path to the session
         session["zipped_output"] = zipped_output
